@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mvvm.databinding.FragmentMiHipotecaBinding;
 
 public class MiHipotecaFragment extends Fragment {
-
     private FragmentMiHipotecaBinding binding;
 
     @Override
@@ -25,7 +24,7 @@ public class MiHipotecaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        HipotecaViewModel hipotecaViewModel = new ViewModelProvider(this).get(HipotecaViewModel.class);
+        final HipotecaViewModel HipotecaViewModel = new ViewModelProvider(this).get(HipotecaViewModel.class);
 
         binding.calcular.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,15 +33,67 @@ public class MiHipotecaFragment extends Fragment {
                 double capital = Double.parseDouble(binding.capital.getText().toString());
                 int plazo = Integer.parseInt(binding.plazo.getText().toString());
 
-                hipotecaViewModel.calcular(capital, plazo);
+                HipotecaViewModel.calcular(capital, plazo);
             }
         });
 
-        hipotecaViewModel.cuota.observe(getViewLifecycleOwner(), new Observer<Double>() {
+        HipotecaViewModel.cuota.observe(getViewLifecycleOwner(), new Observer<Double>() {
             @Override
             public void onChanged(Double cuota) {
                 binding.cuota.setText(String.format("%.2f",cuota));
             }
         });
+
+        HipotecaViewModel.errorCapital.observe(getViewLifecycleOwner(), new Observer<Double>() {
+            @Override
+            public void onChanged(Double capitalMinimo) {
+                if (capitalMinimo != null) {
+                    binding.capital.setError("El capital no puede ser inferor a " + capitalMinimo + " euros");
+                } else {
+                    binding.capital.setError(null);
+                }
+            }
+        });
+
+        HipotecaViewModel.errorPlazos.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer plazoMinimo) {
+                if (plazoMinimo != null) {
+                    binding.plazo.setError("El plazo no puede ser inferior a " + plazoMinimo + " años");
+                } else {
+                    binding.plazo.setError(null);
+                }
+            }
+        });
+        HipotecaViewModel.calculando.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean calculando) {
+                if (calculando) {
+                    binding.calculando.setVisibility(View.VISIBLE);
+                    binding.cuota.setVisibility(View.GONE);
+                } else {
+                    binding.calculando.setVisibility(View.GONE);
+                    binding.cuota.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
