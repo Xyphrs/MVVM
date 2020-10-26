@@ -65,6 +65,7 @@ public class MiHipotecaFragment extends Fragment {
                 }
             }
         });
+
         HipotecaViewModel.calculando.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean calculando) {

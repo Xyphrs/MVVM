@@ -45,7 +45,6 @@ public class HipotecaViewModel extends AndroidViewModel {
                     public void cuandoHayaErrorDeCapitalInferiorAlMinimo(double capitalMinimo) {
                         errorCapital.postValue(capitalMinimo);
                     }
-
                     @Override
                     public void cuandoHayaErrorDePlazoInferiorAlMinimo(int plazoMinimo) {
                         errorPlazos.postValue(plazoMinimo);
@@ -54,7 +53,6 @@ public class HipotecaViewModel extends AndroidViewModel {
                     public void cuandoEmpieceElCalculo() {
                         calculando.postValue(true);
                     }
-
                     @Override
                     public void cuandoFinaliceElCalculo() {
                         calculando.postValue(false);
